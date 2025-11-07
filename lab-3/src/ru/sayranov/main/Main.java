@@ -1,3 +1,13 @@
+package ru.sayranov.main;
+
+import ru.sayranov.geography.City_2_1_10;
+import ru.sayranov.geography.City_2_6_5;
+import ru.sayranov.geography.Route_2_2_5;
+import ru.sayranov.math.Fraction_2_1_4;
+import ru.sayranov.math.Fraction_2_4_2;
+import ru.sayranov.math.Fraction_2_3_1;
+import ru.sayranov.math.PowerCalc_2_7_3;
+
 import java.util.Scanner;
 
 public class Main {
@@ -115,9 +125,9 @@ public class Main {
             System.out.println("a / b = " + a.div(b));
 
 //            попробуем "унаследовать" и получаем ошибку компиляции:
-//            class MutableFraction extends Fraction_2_3_1 {  }
+//            class MutableFraction extends ru.sayranov.math.Fraction_2_3_1 {  }
 
-        } else if (exercise == 4 && task ==  2) {
+        } else if (exercise == 4 && task == 2) {
             System.out.println("------------ Задача 4 | Задание 2 ------------");
 
             Number n = new Fraction_2_4_2(2, 5);
@@ -127,6 +137,41 @@ public class Main {
             System.out.println("Number (2/5) как long:   " + n.longValue());
 
             System.out.println();
+        } else if (exercise == 5 && task == 1) {
+            System.out.println("------------ Задача 5 | Задание 1 ------------");
+
+            System.out.println("2 + 3/5 + 2.3 = " +
+                    Sum_2_5_1.sum(2, new Fraction_2_4_2(3, 5), 2.3));
+
+            System.out.println("3.6 + 49/12 + 3 + 3/2 = " +
+                    Sum_2_5_1.sum(3.6, new Fraction_2_4_2(49, 12), 3, new Fraction_2_4_2(3, 2)));
+
+            System.out.println("1/3 + 1 = " +
+                    Sum_2_5_1.sum(new Fraction_2_4_2(1, 3), 1));
+        } else if (exercise == 6 && task == 5) {
+            System.out.println("------------ Задача 6 | Задание 5 ------------");
+
+            City_2_6_5 city1 = new City_2_6_5("Москва");
+            City_2_6_5 city2 = new City_2_6_5("Санкт-Петербург");
+            City_2_6_5 city3 = new City_2_6_5("Казань");
+
+            city1.addPath(city2, 100);
+            city1.addPath(city3, 200);
+
+            City_2_6_5 city4 = new City_2_6_5("Владивосток");
+            city4.addPath(city2, 100);
+            city4.addPath(city3, 200);
+
+            System.out.println(city1.equals(city4)); // true
+
+        } else if (exercise == 7 && task == 3) {
+            if (args.length < 2) {
+                System.out.println("Использование: java Main <X> <Y>");
+                return;
+            }
+
+            double result = PowerCalc_2_7_3.power(args[0], args[1]);
+            System.out.println(args[0] + " ^ " + args[1] + " = " + result);
         } else {
             valid = false;
         }

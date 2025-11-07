@@ -1,3 +1,5 @@
+package ru.sayranov.geography;
+
 import java.util.*;
 
 public class Route_2_2_5 {

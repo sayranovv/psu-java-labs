@@ -1,26 +1,27 @@
-import java.util.HashMap;
-import java.util.Map;
+package ru.sayranov.geography;
 
-public class City_2_1_10 {
+import java.util.*;
+import java.util.stream.Collectors;
 
+public class City_2_6_5 {
     private final String name;
-    private final Map<City_2_1_10, Integer> paths;
+    private final Map<City_2_6_5, Integer> paths;
 
-    public City_2_1_10(String name) {
+    public City_2_6_5(String name) {
         this.name = name;
         this.paths = new HashMap<>();
     }
 
-    public City_2_1_10(String name, Map<City_2_1_10, Integer> initialPaths) {
+    public City_2_6_5(String name, Map<City_2_6_5, Integer> initialPaths) {
         this.name = name;
         this.paths = new HashMap<>(initialPaths);
 
-        for (Map.Entry<City_2_1_10, Integer> entry : initialPaths.entrySet()) {
+        for (Map.Entry<City_2_6_5, Integer> entry : initialPaths.entrySet()) {
             addPath(entry.getKey(), entry.getValue());
         }
     }
 
-    public void addPath(City_2_1_10 city, int cost) {
+    public void addPath(City_2_6_5 city, int cost) {
         if (city == null) {
             throw new IllegalArgumentException("Город не может быть null");
         }
@@ -46,14 +47,14 @@ public class City_2_1_10 {
         }
     }
 
-    public void removePath(City_2_1_10 city) {
+    public void removePath(City_2_6_5 city) {
         if (city == null) return;
 
         paths.remove(city);
         city.paths.remove(this);
     }
 
-    public Map<City_2_1_10, Integer> getPaths() {
+    public Map<City_2_6_5, Integer> getPaths() {
         return Map.copyOf(paths);
     }
 
@@ -62,7 +63,7 @@ public class City_2_1_10 {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append(" -> ");
 
-        for (Map.Entry<City_2_1_10, Integer> entry : paths.entrySet()) {
+        for (Map.Entry<City_2_6_5, Integer> entry : paths.entrySet()) {
             sb.append(entry.getKey().name).append(":").append(entry.getValue()).append(" ");
         }
 
@@ -72,12 +73,35 @@ public class City_2_1_10 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof City_2_1_10 other)) return false;
-        return name.equals(other.name);
+        if (!(o instanceof City_2_6_5 other)) return false;
+
+        return pathsEquals(this.paths, other.paths);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        List<String> pathStrings = new ArrayList<>();
+
+        for (Map.Entry<City_2_6_5, Integer> entry : paths.entrySet()) {
+            pathStrings.add(entry.getKey().name + ":" + entry.getValue());
+        }
+
+        Collections.sort(pathStrings);
+
+        return Objects.hash(pathStrings);
+    }
+
+    private boolean pathsEquals(Map<City_2_6_5, Integer> paths1, Map<City_2_6_5, Integer> paths2) {
+        if (paths1.size() != paths2.size()) return false;
+
+        Set<String> pathSet1 = paths1.entrySet().stream()
+                .map(entry -> entry.getKey().name + ":" + entry.getValue())
+                .collect(Collectors.toSet());
+
+        Set<String> pathSet2 = paths2.entrySet().stream()
+                .map(entry -> entry.getKey().name + ":" + entry.getValue())
+                .collect(Collectors.toSet());
+
+        return pathSet1.equals(pathSet2);
     }
 }
