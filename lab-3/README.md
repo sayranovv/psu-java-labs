@@ -18,11 +18,11 @@
 ### Алгоритм решения
 
 ```java
-public class Fraction {
+public class Fraction_2_1_4 {
     private final int chislitel;
     private final int znamenatel;
 
-    public Fraction(int chislitel, int znamenatel) {
+    public Fraction_2_1_4(int chislitel, int znamenatel) {
         if (znamenatel == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен 0");
         }
@@ -51,46 +51,46 @@ public class Fraction {
         return chislitel + "/" + znamenatel;
     }
 
-    public Fraction sum(Fraction other) {
+    public Fraction_2_1_4 sum(Fraction_2_1_4 other) {
         int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new Fraction(num, den);
+        return new Fraction_2_1_4(num, den);
     }
 
-    public Fraction minus(Fraction other) {
+    public Fraction_2_1_4 minus(Fraction_2_1_4 other) {
         int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new Fraction(num, den);
+        return new Fraction_2_1_4(num, den);
     }
 
-    public Fraction minus(int n) {
-        return this.minus(new Fraction(n, 1));
+    public Fraction_2_1_4 minus(int n) {
+        return this.minus(new Fraction_2_1_4(n, 1));
     }
 
-    public Fraction multiply(Fraction other) {
-        return new Fraction(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    public Fraction_2_1_4 multiply(Fraction_2_1_4 other) {
+        return new Fraction_2_1_4(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
     }
 
-    public Fraction multiply(int n) {
-        return new Fraction(this.chislitel * n, this.znamenatel);
+    public Fraction_2_1_4 multiply(int n) {
+        return new Fraction_2_1_4(this.chislitel * n, this.znamenatel);
     }
 
-    public Fraction div(Fraction other) {
+    public Fraction_2_1_4 div(Fraction_2_1_4 other) {
         if (other.chislitel == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new Fraction(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+        return new Fraction_2_1_4(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
     }
 
-    public Fraction div(int n) {
+    public Fraction_2_1_4 div(int n) {
         if (n == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new Fraction(this.chislitel, this.znamenatel * n);
+        return new Fraction_2_1_4(this.chislitel, this.znamenatel * n);
     }
 }
 ```
@@ -109,26 +109,26 @@ public class Fraction {
 import java.util.HashMap;
 import java.util.Map;
 
-public class City {
+public class City_2_1_10 {
 
     private final String name;
-    private final Map<City, Integer> paths;
+    private final Map<City_2_1_10, Integer> paths;
 
-    public City(String name) {
+    public City_2_1_10(String name) {
         this.name = name;
         this.paths = new HashMap<>();
     }
 
-    public City(String name, Map<City, Integer> initialPaths) {
+    public City_2_1_10(String name, Map<City_2_1_10, Integer> initialPaths) {
         this.name = name;
         this.paths = new HashMap<>(initialPaths);
 
-        for (Map.Entry<City, Integer> entry : initialPaths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : initialPaths.entrySet()) {
             addPath(entry.getKey(), entry.getValue());
         }
     }
 
-    public void addPath(City city, int cost) {
+    public void addPath(City_2_1_10 city, int cost) {
         if (city == null) {
             throw new IllegalArgumentException("Город не может быть null");
         }
@@ -154,14 +154,14 @@ public class City {
         }
     }
 
-    public void removePath(City city) {
+    public void removePath(City_2_1_10 city) {
         if (city == null) return;
 
         paths.remove(city);
         city.paths.remove(this);
     }
 
-    public Map<City, Integer> getPaths() {
+    public Map<City_2_1_10, Integer> getPaths() {
         return Map.copyOf(paths);
     }
 
@@ -170,7 +170,7 @@ public class City {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append(" -> ");
 
-        for (Map.Entry<City, Integer> entry : paths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : paths.entrySet()) {
             sb.append(entry.getKey().name).append(":").append(entry.getValue()).append(" ");
         }
 
@@ -180,7 +180,7 @@ public class City {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof City other)) return false;
+        if (!(o instanceof City_2_1_10 other)) return false;
         return name.equals(other.name);
     }
 
@@ -224,7 +224,85 @@ public class City {
 ### Алгоритм решения
 
 ```java
+import java.util.*;
 
+public class Route_2_2_5 {
+    private City_2_1_10 start;
+    private City_2_1_10 end;
+
+    public Route_2_2_5(City_2_1_10 start, City_2_1_10 end) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("Начальный и конечный города не могут быть null");
+        }
+
+        this.start = start;
+        this.end = end;
+    }
+
+    public List<City_2_1_10> getPath() {
+        Map<City_2_1_10, Integer> distances = new HashMap<>();
+        Map<City_2_1_10, City_2_1_10> previous = new HashMap<>();
+        PriorityQueue<City_2_1_10> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+
+        for (City_2_1_10 city : getAllCities(start)) {
+            distances.put(city, Integer.MAX_VALUE);
+        }
+        
+        distances.put(start, 0);
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            City_2_1_10 current = queue.poll();
+
+            if (current.equals(end)) break;
+
+            for (Map.Entry<City_2_1_10, Integer> entry : current.getPaths().entrySet()) {
+                City_2_1_10 neighbor = entry.getKey();
+                int cost = entry.getValue();
+                int newDist = distances.get(current) + cost;
+
+                if (newDist < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                    distances.put(neighbor, newDist);
+                    previous.put(neighbor, current);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        if (!previous.containsKey(end)) return Collections.emptyList();
+
+        List<City_2_1_10> path = new ArrayList<>();
+
+        for (City_2_1_10 at = end; at != null; at = previous.get(at)) {
+            path.add(at);
+        }
+
+        Collections.reverse(path);
+        return path;
+    }
+
+    private Set<City_2_1_10> getAllCities(City_2_1_10 start) {
+        Set<City_2_1_10> all = new HashSet<>();
+        Queue<City_2_1_10> queue = new LinkedList<>();
+        queue.add(start);
+        all.add(start);
+
+        while (!queue.isEmpty()) {
+            City_2_1_10 current = queue.poll();
+            for (City_2_1_10 neighbor : current.getPaths().keySet()) {
+                if (all.add(neighbor)) queue.add(neighbor);
+            }
+        }
+        return all;
+    }
+
+    @Override
+    public String toString() {
+        List<City_2_1_10> path = getPath();
+        if (path.isEmpty()) return "Путь не найден";
+        return String.join(" -> ", path.stream().map(c -> c.toString().split(" -> ")[0]).toList());
+    }
+}
 ```
 
 # Задание 3
@@ -239,7 +317,81 @@ public class City {
 ### Алгоритм решения
 
 ```java
+public final class Fraction_2_3_1 {
+    private final int chislitel;
+    private final int znamenatel;
 
+    public Fraction_2_3_1(int chislitel, int znamenatel) {
+        if (znamenatel == 0) {
+            throw new IllegalArgumentException("Знаменатель не может быть равен 0");
+        }
+
+        int nod = nod(Math.abs(chislitel), Math.abs(znamenatel));
+
+        if (znamenatel < 0) {
+            chislitel = -chislitel;
+            znamenatel = -znamenatel;
+        }
+        this.chislitel = chislitel / nod;
+        this.znamenatel = znamenatel / nod;
+    }
+
+    private int nod(int a, int b) {
+        while (b != 0) {
+            int t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    @Override
+    public String toString() {
+        return chislitel + "/" + znamenatel;
+    }
+
+    public Fraction_2_3_1 sum(Fraction_2_3_1 other) {
+        int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
+        int den = this.znamenatel * other.znamenatel;
+
+        return new Fraction_2_3_1(num, den);
+    }
+
+    public Fraction_2_3_1 minus(Fraction_2_3_1 other) {
+        int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
+        int den = this.znamenatel * other.znamenatel;
+
+        return new Fraction_2_3_1(num, den);
+    }
+
+    public Fraction_2_3_1 minus(int n) {
+        return this.minus(new Fraction_2_3_1(n, 1));
+    }
+
+    public Fraction_2_3_1 multiply(Fraction_2_3_1 other) {
+        return new Fraction_2_3_1(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    }
+
+    public Fraction_2_3_1 multiply(int n) {
+        return new Fraction_2_3_1(this.chislitel * n, this.znamenatel);
+    }
+
+    public Fraction_2_3_1 div(Fraction_2_3_1 other) {
+        if (other.chislitel == 0) {
+            throw new IllegalArgumentException("Деление на ноль невозможно!");
+        }
+
+        return new Fraction_2_3_1(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+    }
+
+    public Fraction_2_3_1 div(int n) {
+        if (n == 0) {
+            throw new IllegalArgumentException("Деление на ноль невозможно!");
+        }
+
+        return new Fraction_2_3_1(this.chislitel, this.znamenatel * n);
+    }
+}
 ```
 
 # Задание 4
@@ -254,7 +406,101 @@ public class City {
 ### Алгоритм решения
 
 ```java
+public final class Fraction_2_4_2 extends Number {
+    private final int chislitel;
+    private final int znamenatel;
 
+    public Fraction_2_4_2(int chislitel, int znamenatel) {
+        if (znamenatel == 0) {
+            throw new IllegalArgumentException("Знаменатель не может быть равен 0");
+        }
+
+        int nod = nod(Math.abs(chislitel), Math.abs(znamenatel));
+
+        if (znamenatel < 0) {
+            chislitel = -chislitel;
+            znamenatel = -znamenatel;
+        }
+        this.chislitel = chislitel / nod;
+        this.znamenatel = znamenatel / nod;
+    }
+
+    private int nod(int a, int b) {
+        while (b != 0) {
+            int t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+
+    @Override
+    public String toString() {
+        return chislitel + "/" + znamenatel;
+    }
+
+    public Fraction_2_4_2 sum(Fraction_2_4_2 other) {
+        int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
+        int den = this.znamenatel * other.znamenatel;
+
+        return new Fraction_2_4_2(num, den);
+    }
+
+    public Fraction_2_4_2 minus(Fraction_2_4_2 other) {
+        int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
+        int den = this.znamenatel * other.znamenatel;
+
+        return new Fraction_2_4_2(num, den);
+    }
+
+    public Fraction_2_4_2 minus(int n) {
+        return this.minus(new Fraction_2_4_2(n, 1));
+    }
+
+    public Fraction_2_4_2 multiply(Fraction_2_4_2 other) {
+        return new Fraction_2_4_2(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    }
+
+    public Fraction_2_4_2 multiply(int n) {
+        return new Fraction_2_4_2(this.chislitel * n, this.znamenatel);
+    }
+
+    public Fraction_2_4_2 div(Fraction_2_4_2 other) {
+        if (other.chislitel == 0) {
+            throw new IllegalArgumentException("Деление на ноль невозможно!");
+        }
+
+        return new Fraction_2_4_2(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+    }
+
+    public Fraction_2_4_2 div(int n) {
+        if (n == 0) {
+            throw new IllegalArgumentException("Деление на ноль невозможно!");
+        }
+
+        return new Fraction_2_4_2(this.chislitel, this.znamenatel * n);
+    }
+
+    @Override
+    public int intValue() {
+        return chislitel / znamenatel;
+    }
+
+    @Override
+    public long longValue() {
+        return (long) chislitel / znamenatel;
+    }
+
+    @Override
+    public float floatValue() {
+        return (float) chislitel / znamenatel;
+    }
+
+    @Override
+    public double doubleValue() {
+        return (double) chislitel / znamenatel;
+    }
+}
 ```
 
 # Задание 5
