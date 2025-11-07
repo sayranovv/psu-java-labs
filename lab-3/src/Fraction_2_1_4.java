@@ -1,8 +1,8 @@
-public class Fraction {
+public class Fraction_2_1_4 {
     private final int chislitel;
     private final int znamenatel;
 
-    public Fraction(int chislitel, int znamenatel) {
+    public Fraction_2_1_4(int chislitel, int znamenatel) {
         if (znamenatel == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен 0");
         }
@@ -31,45 +31,45 @@ public class Fraction {
         return chislitel + "/" + znamenatel;
     }
 
-    public Fraction sum(Fraction other) {
+    public Fraction_2_1_4 sum(Fraction_2_1_4 other) {
         int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new Fraction(num, den);
+        return new Fraction_2_1_4(num, den);
     }
 
-    public Fraction minus(Fraction other) {
+    public Fraction_2_1_4 minus(Fraction_2_1_4 other) {
         int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new Fraction(num, den);
+        return new Fraction_2_1_4(num, den);
     }
 
-    public Fraction minus(int n) {
-        return this.minus(new Fraction(n, 1));
+    public Fraction_2_1_4 minus(int n) {
+        return this.minus(new Fraction_2_1_4(n, 1));
     }
 
-    public Fraction multiply(Fraction other) {
-        return new Fraction(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    public Fraction_2_1_4 multiply(Fraction_2_1_4 other) {
+        return new Fraction_2_1_4(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
     }
 
-    public Fraction multiply(int n) {
-        return new Fraction(this.chislitel * n, this.znamenatel);
+    public Fraction_2_1_4 multiply(int n) {
+        return new Fraction_2_1_4(this.chislitel * n, this.znamenatel);
     }
 
-    public Fraction div(Fraction other) {
+    public Fraction_2_1_4 div(Fraction_2_1_4 other) {
         if (other.chislitel == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new Fraction(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+        return new Fraction_2_1_4(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
     }
 
-    public Fraction div(int n) {
+    public Fraction_2_1_4 div(int n) {
         if (n == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new Fraction(this.chislitel, this.znamenatel * n);
+        return new Fraction_2_1_4(this.chislitel, this.znamenatel * n);
     }
 }

@@ -1,26 +1,26 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class City {
+public class City_2_1_10 {
 
     private final String name;
-    private final Map<City, Integer> paths;
+    private final Map<City_2_1_10, Integer> paths;
 
-    public City(String name) {
+    public City_2_1_10(String name) {
         this.name = name;
         this.paths = new HashMap<>();
     }
 
-    public City(String name, Map<City, Integer> initialPaths) {
+    public City_2_1_10(String name, Map<City_2_1_10, Integer> initialPaths) {
         this.name = name;
         this.paths = new HashMap<>(initialPaths);
 
-        for (Map.Entry<City, Integer> entry : initialPaths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : initialPaths.entrySet()) {
             addPath(entry.getKey(), entry.getValue());
         }
     }
 
-    public void addPath(City city, int cost) {
+    public void addPath(City_2_1_10 city, int cost) {
         if (city == null) {
             throw new IllegalArgumentException("Город не может быть null");
         }
@@ -46,14 +46,14 @@ public class City {
         }
     }
 
-    public void removePath(City city) {
+    public void removePath(City_2_1_10 city) {
         if (city == null) return;
 
         paths.remove(city);
         city.paths.remove(this);
     }
 
-    public Map<City, Integer> getPaths() {
+    public Map<City_2_1_10, Integer> getPaths() {
         return Map.copyOf(paths);
     }
 
@@ -62,7 +62,7 @@ public class City {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append(" -> ");
 
-        for (Map.Entry<City, Integer> entry : paths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : paths.entrySet()) {
             sb.append(entry.getKey().name).append(":").append(entry.getValue()).append(" ");
         }
 
@@ -72,7 +72,7 @@ public class City {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof City other)) return false;
+        if (!(o instanceof City_2_1_10 other)) return false;
         return name.equals(other.name);
     }
 
