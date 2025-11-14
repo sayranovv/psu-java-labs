@@ -106,29 +106,31 @@ public class ru.sayranov.math.Fraction_2_1_4 {
 ### Алгоритм решения
 
 ```java
+package ru.sayranov.geography;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class ru.sayranov.geography.City_2_1_10 {
+public class City_2_1_10 {
 
     private final String name;
-    private final Map<ru.sayranov.geography.City_2_1_10, Integer> paths;
+    private final Map<City_2_1_10, Integer> paths;
 
-    public ru.sayranov.geography.City_2_1_10(String name) {
+    public City_2_1_10(String name) {
         this.name = name;
         this.paths = new HashMap<>();
     }
 
-    public ru.sayranov.geography.City_2_1_10(String name, Map<ru.sayranov.geography.City_2_1_10, Integer> initialPaths) {
+    public City_2_1_10(String name, Map<City_2_1_10, Integer> initialPaths) {
         this.name = name;
         this.paths = new HashMap<>(initialPaths);
 
-        for (Map.Entry<ru.sayranov.geography.City_2_1_10, Integer> entry : initialPaths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : initialPaths.entrySet()) {
             addPath(entry.getKey(), entry.getValue());
         }
     }
 
-    public void addPath(ru.sayranov.geography.City_2_1_10 city, int cost) {
+    public void addPath(City_2_1_10 city, int cost) {
         if (city == null) {
             throw new IllegalArgumentException("Город не может быть null");
         }
@@ -154,14 +156,14 @@ public class ru.sayranov.geography.City_2_1_10 {
         }
     }
 
-    public void removePath(ru.sayranov.geography.City_2_1_10 city) {
+    public void removePath(City_2_1_10 city) {
         if (city == null) return;
 
         paths.remove(city);
         city.paths.remove(this);
     }
 
-    public Map<ru.sayranov.geography.City_2_1_10, Integer> getPaths() {
+    public Map<City_2_1_10, Integer> getPaths() {
         return Map.copyOf(paths);
     }
 
@@ -170,7 +172,7 @@ public class ru.sayranov.geography.City_2_1_10 {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append(" -> ");
 
-        for (Map.Entry<ru.sayranov.geography.City_2_1_10, Integer> entry : paths.entrySet()) {
+        for (Map.Entry<City_2_1_10, Integer> entry : paths.entrySet()) {
             sb.append(entry.getKey().name).append(":").append(entry.getValue()).append(" ");
         }
 
@@ -180,7 +182,7 @@ public class ru.sayranov.geography.City_2_1_10 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ru.sayranov.geography.City_2_1_10 other)) return false;
+        if (!(o instanceof City_2_1_10 other)) return false;
         return name.equals(other.name);
     }
 
@@ -189,7 +191,6 @@ public class ru.sayranov.geography.City_2_1_10 {
         return name.hashCode();
     }
 }
-
 ```
 
 # Задание 2
@@ -224,15 +225,16 @@ public class ru.sayranov.geography.City_2_1_10 {
 ### Алгоритм решения
 
 ```java
-import ru.sayranov.geography.City_2_1_10;
+package ru.sayranov.geography;
 
 import java.util.*;
 
-public class ru.sayranov.geography.Route_2_2_5 {
+public class Route_2_2_5 {
     private City_2_1_10 start;
     private City_2_1_10 end;
 
-    public ru.sayranov.geography.Route_2_2_5(City_2_1_10 start, City_2_1_10 end) {
+    public Route_2_2_5(City_2_1_10 start, City_2_1_10 end) {
+
         if (start == null || end == null) {
             throw new IllegalArgumentException("Начальный и конечный города не могут быть null");
         }
@@ -241,68 +243,104 @@ public class ru.sayranov.geography.Route_2_2_5 {
         this.end = end;
     }
 
-    public List<City_2_1_10> getPath() {
-        Map<City_2_1_10, Integer> distances = new HashMap<>();
-        Map<City_2_1_10, City_2_1_10> previous = new HashMap<>();
-        PriorityQueue<City_2_1_10> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
-
-        for (City_2_1_10 city : getAllCities(start)) {
-            distances.put(city, Integer.MAX_VALUE);
-        }
-
-        distances.put(start, 0);
-        queue.add(start);
-
-        while (!queue.isEmpty()) {
-            City_2_1_10 current = queue.poll();
-
-            if (current.equals(end)) break;
-
-            for (Map.Entry<City_2_1_10, Integer> entry : current.getPaths().entrySet()) {
-                City_2_1_10 neighbor = entry.getKey();
-                int cost = entry.getValue();
-                int newDist = distances.get(current) + cost;
-
-                if (newDist < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
-                    distances.put(neighbor, newDist);
-                    previous.put(neighbor, current);
-                    queue.add(neighbor);
-                }
-            }
-        }
-
-        if (!previous.containsKey(end)) return Collections.emptyList();
-
-        List<City_2_1_10> path = new ArrayList<>();
-
-        for (City_2_1_10 at = end; at != null; at = previous.get(at)) {
-            path.add(at);
-        }
-
-        Collections.reverse(path);
-        return path;
+    public City_2_1_10 getStart() {
+        return start;
     }
 
-    private Set<City_2_1_10> getAllCities(City_2_1_10 start) {
-        Set<City_2_1_10> all = new HashSet<>();
+    public void setStart(City_2_1_10 start) {
+
+        if (start == null) {
+            throw new IllegalArgumentException("Город начала не может быть null");
+        }
+
+        this.start = start;
+    }
+
+    public City_2_1_10 getEnd() {
+        return end;
+    }
+
+    public void setEnd(City_2_1_10 end) {
+
+        if (end == null) {
+            throw new IllegalArgumentException("Город конца не может быть null");
+        }
+
+        this.end = end;
+    }
+
+    // bfs
+    public City_2_1_10[] getRoute() {
+
+        if (start.equals(end)) {
+            return new City_2_1_10[]{start};
+        }
+
         Queue<City_2_1_10> queue = new LinkedList<>();
+        Set<City_2_1_10> visited = new HashSet<>();
+        Map<City_2_1_10, City_2_1_10> previous = new HashMap<>();
+
         queue.add(start);
-        all.add(start);
+        visited.add(start);
 
         while (!queue.isEmpty()) {
+            // Берём город из начала очереди
             City_2_1_10 current = queue.poll();
-            for (City_2_1_10 neighbor : current.getPaths().keySet()) {
-                if (all.add(neighbor)) queue.add(neighbor);
+
+            if (current.equals(end)) {
+                break;
+            }
+
+            Map<City_2_1_10, Integer> neighbors = current.getPaths();
+
+            for (City_2_1_10 neighbor : neighbors.keySet()) {
+
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    previous.put(neighbor, current); // запоминаем откуда пришли
+                    queue.add(neighbor);
+                }
+
             }
         }
-        return all;
+
+        if (!previous.containsKey(end) && !start.equals(end)) {
+            return new City_2_1_10[0];
+        }
+
+        // восстановление пути
+        LinkedList<City_2_1_10> path = new LinkedList<>();
+        City_2_1_10 current = end;
+
+        while (current != null) {
+            path.addFirst(current);
+            current = previous.get(current);
+        }
+
+        return path.toArray(new City_2_1_10[0]);
     }
 
     @Override
     public String toString() {
-        List<City_2_1_10> path = getPath();
-        if (path.isEmpty()) return "Путь не найден";
-        return String.join(" -> ", path.stream().map(c -> c.toString().split(" -> ")[0]).toList());
+        City_2_1_10[] route = getRoute();
+
+        if (route.length == 0) {
+            return "Путь не найден";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < route.length; i++) {
+
+            sb.append(route[i].toString().split(" -> ")[0]);
+
+            if (i < route.length - 1) {
+                sb.append(" -> ");
+            }
+
+        }
+
+        return sb.toString();
     }
 }
 ```
@@ -319,11 +357,13 @@ public class ru.sayranov.geography.Route_2_2_5 {
 ### Алгоритм решения
 
 ```java
-public final class ru.sayranov.math.Fraction_2_3_1 {
+package ru.sayranov.math;
+
+public final class Fraction_2_3_1 {
     private final int chislitel;
     private final int znamenatel;
 
-    public ru.sayranov.math.Fraction_2_3_1(int chislitel, int znamenatel) {
+    public Fraction_2_3_1(int chislitel, int znamenatel) {
         if (znamenatel == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен 0");
         }
@@ -352,46 +392,46 @@ public final class ru.sayranov.math.Fraction_2_3_1 {
         return chislitel + "/" + znamenatel;
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 sum(ru.sayranov.math.Fraction_2_3_1 other) {
+    public Fraction_2_3_1 sum(Fraction_2_3_1 other) {
         int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new ru.sayranov.math.Fraction_2_3_1(num, den);
+        return new Fraction_2_3_1(num, den);
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 minus(ru.sayranov.math.Fraction_2_3_1 other) {
+    public Fraction_2_3_1 minus(Fraction_2_3_1 other) {
         int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new ru.sayranov.math.Fraction_2_3_1(num, den);
+        return new Fraction_2_3_1(num, den);
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 minus(int n) {
-        return this.minus(new ru.sayranov.math.Fraction_2_3_1(n, 1));
+    public Fraction_2_3_1 minus(int n) {
+        return this.minus(new Fraction_2_3_1(n, 1));
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 multiply(ru.sayranov.math.Fraction_2_3_1 other) {
-        return new ru.sayranov.math.Fraction_2_3_1(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    public Fraction_2_3_1 multiply(Fraction_2_3_1 other) {
+        return new Fraction_2_3_1(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 multiply(int n) {
-        return new ru.sayranov.math.Fraction_2_3_1(this.chislitel * n, this.znamenatel);
+    public Fraction_2_3_1 multiply(int n) {
+        return new Fraction_2_3_1(this.chislitel * n, this.znamenatel);
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 div(ru.sayranov.math.Fraction_2_3_1 other) {
+    public Fraction_2_3_1 div(Fraction_2_3_1 other) {
         if (other.chislitel == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new ru.sayranov.math.Fraction_2_3_1(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+        return new Fraction_2_3_1(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
     }
 
-    public ru.sayranov.math.Fraction_2_3_1 div(int n) {
+    public Fraction_2_3_1 div(int n) {
         if (n == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new ru.sayranov.math.Fraction_2_3_1(this.chislitel, this.znamenatel * n);
+        return new Fraction_2_3_1(this.chislitel, this.znamenatel * n);
     }
 }
 ```
@@ -408,11 +448,13 @@ public final class ru.sayranov.math.Fraction_2_3_1 {
 ### Алгоритм решения
 
 ```java
-public final class ru.sayranov.math.Fraction_2_4_2 extends Number {
+package ru.sayranov.math;
+
+public final class Fraction_2_4_2 extends Number {
     private final int chislitel;
     private final int znamenatel;
 
-    public ru.sayranov.math.Fraction_2_4_2(int chislitel, int znamenatel) {
+    public Fraction_2_4_2(int chislitel, int znamenatel) {
         if (znamenatel == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен 0");
         }
@@ -441,46 +483,46 @@ public final class ru.sayranov.math.Fraction_2_4_2 extends Number {
         return chislitel + "/" + znamenatel;
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 sum(ru.sayranov.math.Fraction_2_4_2 other) {
+    public Fraction_2_4_2 sum(Fraction_2_4_2 other) {
         int num = this.chislitel * other.znamenatel + other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new ru.sayranov.math.Fraction_2_4_2(num, den);
+        return new Fraction_2_4_2(num, den);
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 minus(ru.sayranov.math.Fraction_2_4_2 other) {
+    public Fraction_2_4_2 minus(Fraction_2_4_2 other) {
         int num = this.chislitel * other.znamenatel - other.chislitel * this.znamenatel;
         int den = this.znamenatel * other.znamenatel;
 
-        return new ru.sayranov.math.Fraction_2_4_2(num, den);
+        return new Fraction_2_4_2(num, den);
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 minus(int n) {
-        return this.minus(new ru.sayranov.math.Fraction_2_4_2(n, 1));
+    public Fraction_2_4_2 minus(int n) {
+        return this.minus(new Fraction_2_4_2(n, 1));
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 multiply(ru.sayranov.math.Fraction_2_4_2 other) {
-        return new ru.sayranov.math.Fraction_2_4_2(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
+    public Fraction_2_4_2 multiply(Fraction_2_4_2 other) {
+        return new Fraction_2_4_2(this.chislitel * other.chislitel, this.znamenatel * other.znamenatel);
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 multiply(int n) {
-        return new ru.sayranov.math.Fraction_2_4_2(this.chislitel * n, this.znamenatel);
+    public Fraction_2_4_2 multiply(int n) {
+        return new Fraction_2_4_2(this.chislitel * n, this.znamenatel);
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 div(ru.sayranov.math.Fraction_2_4_2 other) {
+    public Fraction_2_4_2 div(Fraction_2_4_2 other) {
         if (other.chislitel == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new ru.sayranov.math.Fraction_2_4_2(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
+        return new Fraction_2_4_2(this.chislitel * other.znamenatel, this.znamenatel * other.chislitel);
     }
 
-    public ru.sayranov.math.Fraction_2_4_2 div(int n) {
+    public Fraction_2_4_2 div(int n) {
         if (n == 0) {
             throw new IllegalArgumentException("Деление на ноль невозможно!");
         }
 
-        return new ru.sayranov.math.Fraction_2_4_2(this.chislitel, this.znamenatel * n);
+        return new Fraction_2_4_2(this.chislitel, this.znamenatel * n);
     }
 
     @Override
@@ -521,7 +563,9 @@ public final class ru.sayranov.math.Fraction_2_4_2 extends Number {
 ### Алгоритм решения
 
 ```java
-public class ru.sayranov.main.Sum_2_5_1 {
+package ru.sayranov.main;
+
+public class Sum_2_5_1 {
 
     public static double sum(Number... numbers) {
         double result = 0.0;
@@ -733,19 +777,4 @@ public class PowerCalc_2_7_3 {
         return pPow(x, y);
     }
 }
-```
-
-# Задание 8
-
-## Задача 4
-
-### Текст задачи
-
-**Клонирование точки.**<br>
-Измените сущность Точка из **2.6.2**. Переопределите метод клонирования, унаследованный от класса **Object**, таким образом, чтобы при его вызове возвращался новый объект Точки, значения полей которого будут копиями оригинальной Точки.
-
-### Алгоритм решения
-
-```java
-
 ```

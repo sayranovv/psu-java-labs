@@ -124,7 +124,7 @@ public class Main {
             System.out.println("a * b = " + a.multiply(b));
             System.out.println("a / b = " + a.div(b));
 
-//            попробуем "унаследовать" и получаем ошибку компиляции:
+//            попробуем унаследовать и получаем ошибку компиляции:
 //            class MutableFraction extends ru.sayranov.math.Fraction_2_3_1 {  }
 
         } else if (exercise == 4 && task == 2) {

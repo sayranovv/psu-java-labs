@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class City_2_6_5 {
+
     private final String name;
     private final Map<City_2_6_5, Integer> paths;
 
