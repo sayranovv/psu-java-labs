@@ -193,8 +193,28 @@ public static <T, P> List<P> map(List<T> source, Function<T, P> function) {
 
 ### Алгоритм решения
 
-```java
+**Predicate.java:**
 
+```java
+public interface Predicate<T> {
+    boolean test(T value);
+}
+```
+
+**Task3_2.java:**
+
+```java
+public static <T> List<T> filter(List<T> source, Predicate<T> predicate) {
+    List<T> result = new ArrayList<>();
+
+    for (T element : source) {
+        if (predicate.test(element)) {
+            result.add(element);
+        }
+    }
+
+    return result;
+}
 ```
 
 # Задание 3
