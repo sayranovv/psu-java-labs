@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Task2_2 {
 
@@ -119,32 +118,6 @@ public class Task2_2 {
                 System.out.println("Поймано исключение: " + e.getMessage());
             }
 
-            System.out.println("\n" + "═".repeat(50));
-            System.out.println("▶ ИНТЕРАКТИВНАЯ ЧАСТЬ");
-            System.out.println("═".repeat(50));
-
-            System.out.println("\nВыберите тип коробок:");
-            System.out.println("  1 - Integer");
-            System.out.println("  2 - Double");
-            System.out.println("  3 - Long");
-            System.out.print("\nВаш выбор: ");
-
-            int choice = Main.getIntInput("");
-
-            switch (choice) {
-                case 1:
-                    interactiveIntegerBoxes();
-                    break;
-                case 2:
-                    interactiveDoubleBoxes();
-                    break;
-                case 3:
-                    interactiveLongBoxes();
-                    break;
-                default:
-                    System.out.println("Неправильный выбор");
-            }
-
             System.out.println("\nЗадача 2.2 завершена!");
 
         } catch (Exception e) {
@@ -172,93 +145,5 @@ public class Task2_2 {
         }
 
         return max;
-    }
-
-    private static void interactiveIntegerBoxes() {
-        System.out.println("\n### Интерактивный поиск максимума для Integer ###\n");
-
-        System.out.print("Введите количество коробок: ");
-        int count = Main.getIntInput("");
-
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным числом");
-            return;
-        }
-
-        List<Box<Integer>> boxes = new ArrayList<>();
-
-        System.out.println("\nВводите целые числа для размещения в коробках:");
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Число " + (i + 1) + ": ");
-            int num = Main.getIntInput("");
-
-            Box<Integer> box = new Box<>();
-            box.put(num);
-            boxes.add(box);
-        }
-
-        double max = findMax(boxes);
-        System.out.println("\nМаксимальное значение: " + max);
-    }
-
-    private static void interactiveDoubleBoxes() {
-        System.out.println("\n### Интерактивный поиск максимума для Double ###\n");
-
-        System.out.print("Введите количество коробок: ");
-        int count = Main.getIntInput("");
-
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным числом");
-            return;
-        }
-
-        List<Box<Double>> boxes = new ArrayList<>();
-
-        System.out.println("\nВводите вещественные числа для размещения в коробках:");
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Число " + (i + 1) + ": ");
-            double num = Main.getDoubleInput("");
-
-            Box<Double> box = new Box<>();
-            box.put(num);
-            boxes.add(box);
-        }
-
-        double max = findMax(boxes);
-        System.out.println("\nМаксимальное значение: " + max);
-    }
-
-    private static void interactiveLongBoxes() {
-        System.out.println("\n### Интерактивный поиск максимума для Long ###\n");
-
-        System.out.print("Введите количество коробок: ");
-        int count = Main.getIntInput("");
-
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным числом");
-            return;
-        }
-
-        List<Box<Long>> boxes = new ArrayList<>();
-
-        System.out.println("\nВводите длинные целые числа для размещения в коробках:");
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Число " + (i + 1) + ": ");
-
-            Scanner scanner = new Scanner(System.in);
-            try {
-                long num = Long.parseLong(scanner.nextLine().trim());
-
-                Box<Long> box = new Box<>();
-                box.put(num);
-                boxes.add(box);
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: введено не длинное целое число");
-                i--;
-            }
-        }
-
-        double max = findMax(boxes);
-        System.out.println("\nМаксимальное значение: " + max);
     }
 }

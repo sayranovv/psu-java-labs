@@ -65,33 +65,6 @@ public class Task3_1 {
             
             List<Integer> maxValues = map(arrays, findMax);
             System.out.println("Результат (максимальные значения): " + maxValues);
-
-
-            System.out.println("\n" + "═".repeat(50));
-            System.out.println("▶ ИНТЕРАКТИВНАЯ ЧАСТЬ");
-            System.out.println("═".repeat(50));
-            
-            System.out.println("\nВыберите тип преобразования:");
-            System.out.println("  1 - Строки в длины");
-            System.out.println("  2 - Числа в абсолютные значения");
-            System.out.println("  3 - Числа в их квадраты");
-            System.out.print("\nВаш выбор: ");
-            
-            int choice = Main.getIntInput("");
-
-            switch (choice) {
-                case 1:
-                    interactiveStringToLength();
-                    break;
-                case 2:
-                    interactiveNumbersToAbsolute();
-                    break;
-                case 3:
-                    interactiveNumbersToSquares();
-                    break;
-                default:
-                    System.out.println("Неправильный выбор");
-            }
             
             System.out.println("\nЗадача 3.1 завершена!");
             
@@ -111,87 +84,5 @@ public class Task3_1 {
         
         return result;
     }
-    
-    private static void interactiveStringToLength() {
-        System.out.println("\n### Интерактивное преобразование строк в длины ###\n");
-        
-        System.out.print("Введите количество строк: ");
-        int count = Main.getIntInput("");
 
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным");
-            return;
-        }
-        
-        List<String> strings = new ArrayList<>();
-        System.out.println("\nВводите строки:");
-        
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Строка " + (i + 1) + ": ");
-            String str = Main.getStringInput("");
-            if (!str.isEmpty()) {
-                strings.add(str);
-            }
-        }
-        
-        Function<String, Integer> stringLength = String::length;
-        List<Integer> lengths = map(strings, stringLength);
-        
-        System.out.println("\nИсходные строки: " + strings);
-        System.out.println("Длины строк: " + lengths);
-    }
-    
-    private static void interactiveNumbersToAbsolute() {
-        System.out.println("\n### Интерактивное преобразование чисел в абсолютные значения ###\n");
-        
-        System.out.print("Введите количество чисел: ");
-        int count = Main.getIntInput("");
-
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным");
-            return;
-        }
-        
-        List<Integer> numbers = new ArrayList<>();
-        System.out.println("\nВводите целые числа:");
-        
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Число " + (i + 1) + ": ");
-            int num = Main.getIntInput("");
-            numbers.add(num);
-        }
-        
-        Function<Integer, Integer> absolute = num -> Math.abs(num);
-        List<Integer> absoluteValues = map(numbers, absolute);
-        
-        System.out.println("\nИсходные числа: " + numbers);
-        System.out.println("Абсолютные значения: " + absoluteValues);
-    }
-    
-    private static void interactiveNumbersToSquares() {
-        System.out.println("\n### Интерактивное преобразование чисел в квадраты ###\n");
-        
-        System.out.print("Введите количество чисел: ");
-        int count = Main.getIntInput("");
-
-        if (count <= 0) {
-            System.out.println("Количество должно быть положительным");
-            return;
-        }
-        
-        List<Integer> numbers = new ArrayList<>();
-        System.out.println("\nВводите целые числа:");
-        
-        for (int i = 0; i < count; i++) {
-            System.out.print("  Число " + (i + 1) + ": ");
-            int num = Main.getIntInput("");
-            numbers.add(num);
-        }
-        
-        Function<Integer, Integer> square = num -> num * num;
-        List<Integer> squares = map(numbers, square);
-        
-        System.out.println("\nИсходные числа: " + numbers);
-        System.out.println("Квадраты чисел: " + squares);
-    }
 }

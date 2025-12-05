@@ -77,10 +77,7 @@ public class Task3_4 {
         }
     }
 
-    public static <T, P> P collect(
-            List<T> source,
-            CollectionSupplier<P> supplier,
-            Collector<T, P> collector) {
+    public static <T, P> P collect(List<T> source, CollectionSupplier<P> supplier, Collector<T, P> collector) {
 
         P collection = supplier.create();
 
@@ -90,4 +87,5 @@ public class Task3_4 {
 
         return collection;
     }
+
 }

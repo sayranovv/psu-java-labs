@@ -1,101 +1,5 @@
 public class Task1_3 {
 
-    public static class Number implements Comparable<Number> {
-        private final double value;
-
-        public Number(double value) {
-            this.value = value;
-        }
-
-        @Override
-        public int compare(Number other) {
-            if (this.value < other.value) {
-                return -1;
-            } else if (this.value > other.value) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Number{" + value + "}";
-        }
-
-        public double getValue() {
-            return value;
-        }
-    }
-
-    public static class Person implements Comparable<Person> {
-        private final String name;
-        private final int age;
-
-        public Person(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-
-        @Override
-        public int compare(Person other) {
-            if (this.age < other.age) {
-                return -1;
-            } else if (this.age > other.age) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Person{" +
-                    "name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getAge() {
-            return age;
-        }
-    }
-
-    public static class Text implements Comparable<Text> {
-        private final String content;
-
-        public Text(String content) {
-            this.content = content;
-        }
-
-        @Override
-        public int compare(Text other) {
-            if (this.content.length() < other.content.length()) {
-                return -1;
-            } else if (this.content.length() > other.content.length()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Text{" +
-                    "content='" + content + '\'' +
-                    ", length=" + content.length() +
-                    '}';
-        }
-
-        public String getContent() {
-            return content;
-        }
-    }
-
     public static void execute() {
 
         try {
@@ -135,11 +39,11 @@ public class Task1_3 {
 
             System.out.println("\nРезультаты сравнения по возрасту:");
             System.out.println("  person1.compare(person2) = " + person1.compare(person2) +
-                    " (" + person1.getName() + " моложе " + person2.getName() + ")");
+                    " (" + person1.name() + " моложе " + person2.name() + ")");
             System.out.println("  person2.compare(person1) = " + person2.compare(person1) +
-                    " (" + person2.getName() + " старше " + person1.getName() + ")");
+                    " (" + person2.name() + " старше " + person1.name() + ")");
             System.out.println("  person1.compare(person3) = " + person1.compare(person3) +
-                    " (" + person1.getName() + " и " + person3.getName() + " одного возраста)");
+                    " (" + person1.name() + " и " + person3.name() + " одного возраста)");
 
             System.out.println("\n▶ ДЕМОНСТРАЦИЯ 3: Сравнение текстов по длине");
             System.out.println("═".repeat(50));
@@ -155,37 +59,11 @@ public class Task1_3 {
 
             System.out.println("\nРезультаты сравнения по длине:");
             System.out.println("  text1.compare(text2) = " + text1.compare(text2) +
-                    " ('" + text1.getContent() + "' короче '" + text2.getContent() + "')");
+                    " ('" + text1.content() + "' короче '" + text2.content() + "')");
             System.out.println("  text2.compare(text1) = " + text2.compare(text1) +
-                    " ('" + text2.getContent() + "' длиннее '" + text1.getContent() + "')");
+                    " ('" + text2.content() + "' длиннее '" + text1.content() + "')");
             System.out.println("  text1.compare(text3) = " + text1.compare(text3) +
-                    " ('" + text1.getContent() + "' длиннее '" + text3.getContent() + "')");
-
-            System.out.println("\n" + "═".repeat(50));
-            System.out.println("▶ ИНТЕРАКТИВНАЯ ЧАСТЬ");
-            System.out.println("═".repeat(50));
-
-            System.out.println("\nВыберите тип данных для сравнения:");
-            System.out.println("  1 - Числа");
-            System.out.println("  2 - Люди (по возрасту)");
-            System.out.println("  3 - Тексты (по длине)");
-            System.out.print("\nВаш выбор: ");
-
-            int choice = Main.getIntInput("");
-
-            switch (choice) {
-                case 1:
-                    interactiveNumberComparison();
-                    break;
-                case 2:
-                    interactivePersonComparison();
-                    break;
-                case 3:
-                    interactiveTextComparison();
-                    break;
-                default:
-                    System.out.println("✗ Неправильный выбор");
-            }
+                    " ('" + text1.content() + "' длиннее '" + text3.content() + "')");
 
             System.out.println("\n✓ Задача 1.3 завершена успешно!");
 
@@ -195,85 +73,67 @@ public class Task1_3 {
         }
     }
 
-    private static void interactiveNumberComparison() {
-        System.out.println("\n### Интерактивное сравнение чисел ###\n");
+    public record Number(double value) implements Comparable<Number> {
 
-        System.out.print("Введите первое число: ");
-        double val1 = Main.getDoubleInput("");
+        @Override
+            public int compare(Number other) {
+                if (this.value < other.value) {
+                    return -1;
+                } else if (this.value > other.value) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
 
-        System.out.print("Введите второе число: ");
-        double val2 = Main.getDoubleInput("");
-
-        Number n1 = new Number(val1);
-        Number n2 = new Number(val2);
-
-        System.out.println("\nЧисла: " + n1 + " и " + n2);
-        int result = n1.compare(n2);
-        System.out.println("Результат сравнения: " + result);
-
-        if (result < 0) {
-            System.out.println("Вывод: " + val1 + " < " + val2);
-        } else if (result > 0) {
-            System.out.println("Вывод: " + val1 + " > " + val2);
-        } else {
-            System.out.println("Вывод: " + val1 + " == " + val2);
+            @Override
+            public String toString() {
+                return "Number{" + value + "}";
+            }
         }
-    }
 
-    private static void interactivePersonComparison() {
-        System.out.println("\n### Интерактивное сравнение людей ###\n");
+    public record Person(String name, int age) implements Comparable<Person> {
 
-        System.out.print("Введите имя первого человека: ");
-        String name1 = Main.getStringInput("");
+        @Override
+            public int compare(Person other) {
+                if (this.age < other.age) {
+                    return -1;
+                } else if (this.age > other.age) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
 
-        System.out.print("Введите возраст первого человека: ");
-        int age1 = Main.getIntInput("");
-
-        System.out.print("Введите имя второго человека: ");
-        String name2 = Main.getStringInput("");
-
-        System.out.print("Введите возраст второго человека: ");
-        int age2 = Main.getIntInput("");
-
-        Person p1 = new Person(name1, age1);
-        Person p2 = new Person(name2, age2);
-
-        System.out.println("\nЛюди: " + p1 + " и " + p2);
-        int result = p1.compare(p2);
-        System.out.println("Результат сравнения по возрасту: " + result);
-
-        if (result < 0) {
-            System.out.println("Вывод: " + name1 + " моложе " + name2);
-        } else if (result > 0) {
-            System.out.println("Вывод: " + name1 + " старше " + name2);
-        } else {
-            System.out.println("Вывод: " + name1 + " и " + name2 + " одного возраста");
+            @Override
+            public String toString() {
+                return "Person{" +
+                        "name='" + name + '\'' +
+                        ", age=" + age +
+                        '}';
+            }
         }
-    }
 
-    private static void interactiveTextComparison() {
-        System.out.println("\n### Интерактивное сравнение текстов ###\n");
+    public record Text(String content) implements Comparable<Text> {
 
-        System.out.print("Введите первый текст: ");
-        String text1 = Main.getStringInput("");
+        @Override
+            public int compare(Text other) {
+                if (this.content.length() < other.content.length()) {
+                    return -1;
+                } else if (this.content.length() > other.content.length()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
 
-        System.out.print("Введите второй текст: ");
-        String text2 = Main.getStringInput("");
-
-        Text t1 = new Text(text1);
-        Text t2 = new Text(text2);
-
-        System.out.println("\nТексты: " + t1 + " и " + t2);
-        int result = t1.compare(t2);
-        System.out.println("Результат сравнения по длине: " + result);
-
-        if (result < 0) {
-            System.out.println("Вывод: '" + text1 + "' короче '" + text2 + "'");
-        } else if (result > 0) {
-            System.out.println("Вывод: '" + text1 + "' длиннее '" + text2 + "'");
-        } else {
-            System.out.println("Вывод: '" + text1 + "' и '" + text2 + "' одинаковой длины");
+            @Override
+            public String toString() {
+                return "Text{" +
+                        "content='" + content + '\'' +
+                        ", length=" + content.length() +
+                        '}';
+            }
         }
-    }
 
 }
