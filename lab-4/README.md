@@ -240,7 +240,34 @@ public static <T> List<T> filter(List<T> source, Predicate<T> predicate) {
 
 ### Алгоритм решения
 
+**Reducer.java:**
+
 ```java
+public interface Reducer<T> {
+    T reduce(T accumulator, T value);
+}
+```
+
+Task3_3.java:
+
+```java
+public static <T> T reduce(List<T> source, T initial, Reducer<T> operation) {
+    T accumulator = initial;
+
+    for (T element : source) {
+        accumulator = operation.reduce(accumulator, element);
+    }
+        
+    return accumulator;
+}
+
+public static <T> T reduceSafe(List<T> source, T initial, Reducer<T> operation) {
+    if (source == null || source.isEmpty()) {
+        return initial;
+    }
+
+    return reduce(source, initial, operation);
+}
 ```
 
 # Задание 3
