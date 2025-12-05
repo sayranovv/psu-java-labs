@@ -149,7 +149,27 @@ public static <T extends Number> double findMax(List<Box<T>> boxes) {
 
 ### Алгоритм решения
 
+**Function.java:**
+
 ```java
+public interface Function<T, P> {
+    P apply(T value);
+}
+```
+
+**Task3_1.java:**
+
+```java
+public static <T, P> List<P> map(List<T> source, Function<T, P> function) {
+    List<P> result = new ArrayList<>();
+
+    for (T element : source) {
+        P transformed = function.apply(element);
+        result.add(transformed);
+    }
+
+    return result;
+}
 ```
 
 # Задание 3
