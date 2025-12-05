@@ -257,7 +257,7 @@ public static <T> T reduce(List<T> source, T initial, Reducer<T> operation) {
     for (T element : source) {
         accumulator = operation.reduce(accumulator, element);
     }
-        
+
     return accumulator;
 }
 
@@ -296,5 +296,36 @@ public static <T> T reduceSafe(List<T> source, T initial, Reducer<T> operation) 
 
 ### Алгоритм решения
 
+**Collector.java:**
+
 ```java
+public interface Collector<T, P> {
+    void collect(P collection, T element);
+}
+```
+
+**CollectionSupplier.java:**
+
+```java
+public interface CollectionSupplier<P> {
+    P create();
+}
+```
+
+**Task3_4.java:**
+
+```java
+public static <T, P> P collect(
+        List<T> source,
+        CollectionSupplier<P> supplier,
+        Collector<T, P> collector) {
+
+    P collection = supplier.create();
+
+    for (T element : source) {
+        collector.collect(collection, element);
+    }
+
+    return collection;
+}
 ```
