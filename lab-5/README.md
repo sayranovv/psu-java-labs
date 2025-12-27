@@ -18,6 +18,20 @@
 
 ### Алгоритм решения
 
+**Fractionable.java:**
+
+```java
+package entities;
+
+public interface Fractionable {
+    
+    double getDecimalValue();
+    void setNumerator(int numerator);
+    void setDenominator(int denominator);
+    
+}
+```
+
 **FractionCached.java:**
 
 ```java
@@ -62,10 +76,6 @@ public class FractionCached extends Fraction {
             isCacheValid = true;
         }
 
-        return cachedValue;
-    }
-
-    public Double getCachedValueDirect() {
         return cachedValue;
     }
 }

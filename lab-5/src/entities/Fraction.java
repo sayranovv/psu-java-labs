@@ -1,6 +1,6 @@
 package entities;
 
-public class Fraction {
+public class Fraction implements Fractionable {
     private int numerator;
 
     private int denominator;

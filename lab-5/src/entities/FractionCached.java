@@ -41,8 +41,4 @@ public class FractionCached extends Fraction {
 
         return cachedValue;
     }
-
-    public Double getCachedValueDirect() {
-        return cachedValue;
-    }
 }
