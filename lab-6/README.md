@@ -29,6 +29,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Аннотация для автоматического вызова метода через Reflection.
+ * Назначение: метод, время жизни: рантайм, без параметров.
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Invoke {
@@ -42,20 +46,42 @@ package entities;
 
 import annotations.Invoke;
 
+/**
+ * Демонстрационный класс: содержит методы для проверки работы аннотации @Invoke.
+ */
 public class InvokeDemo {
 
+    /**
+     * Флаг, который показывает, что аннотированный метод действительно был вызван.
+     */
     private boolean invoked;
 
+    /**
+     * Метод помечен @Invoke и должен вызываться обработчиком автоматически.
+     * Здесь мы изменяем флаг и возвращаем строку, чтобы тесты могли проверить результат.
+     *
+     * @return строка-приветствие, подтверждающая вызов
+     */
     @Invoke
     public String sayHello() {
         invoked = true;
         return "Hello from @Invoke method";
     }
 
+    /**
+     * Обычный метод без аннотации — нужен, чтобы показать, что он не будет вызван автоматически.
+     *
+     * @return текстовое значение, которое мы не ожидаем получать из обработчика
+     */
     public String skipMe() {
         return "Not annotated";
     }
 
+    /**
+     * Возвращает состояние флага, чтобы убедиться, что аннотированный метод был вызван.
+     *
+     * @return true, если sayHello уже вызывался
+     */
     public boolean wasInvoked() {
         return invoked;
     }
@@ -75,8 +101,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис для задания 1: ищет и вызывает методы, помеченные @Invoke.
+ */
 public class Task1Service {
 
+    /**
+     * Демонстрация: создаем объект, вызываем все методы с @Invoke и печатаем результаты/флаг.
+     */
     public void runTask1() {
         System.out.println("\n─── ЗАДАНИЕ 1: @Invoke ───\n");
         InvokeDemo demo = new InvokeDemo();
@@ -89,6 +121,13 @@ public class Task1Service {
         System.out.println("Флаг вызова внутри объекта: " + demo.wasInvoked());
     }
 
+    /**
+     * Обходит все методы целевого объекта, вызывает только те, что помечены @Invoke.
+     * Возвращает список значений, которые вернули вызванные методы.
+     *
+     * @param target объект, на котором ищем методы
+     * @return список результатов вызовов
+     */
     public List<Object> invokeAnnotatedMethods(Object target) {
         List<Object> results = new ArrayList<>();
         if (target == null) {
@@ -99,7 +138,7 @@ public class Task1Service {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Invoke.class)) {
                 try {
-                    method.setAccessible(true);
+                    method.setAccessible(true); // даем доступ к приватным методам ради демонстрации
                     Object result = method.invoke(target);
                     results.add(result);
                 } catch (IllegalAccessException | InvocationTargetException e) {
@@ -139,9 +178,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Аннотация указывает тип по умолчанию для класса или поля.
+ */
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Default {
+    /**
+     * @return класс, используемый как значение по умолчанию
+     */
     Class<?> value();
 }
 ```
@@ -153,10 +198,21 @@ package entities;
 
 import annotations.Default;
 
+/**
+ * Образец класса с аннотацией @Default: хранит строку и демонстрирует доступ к типу по умолчанию.
+ */
 @Default(String.class)
 public class DefaultDemo {
+    /**
+     * Демонстрационное значение, чтобы показать работу геттера и класса в целом.
+     */
     private String value = "demo";
 
+    /**
+     * Возвращает сохраненную строку; используется в выводе сервиса.
+     *
+     * @return текстовое поле value
+     */
     public String getValue() {
         return value;
     }
@@ -171,8 +227,14 @@ package services;
 import annotations.Default;
 import entities.DefaultDemo;
 
+/**
+ * Сервис для демонстрации аннотации @Default: показывает, какой класс указан по умолчанию.
+ */
 public class Task2Service {
 
+    /**
+     * Ищет @Default на классе DefaultDemo и печатает найденный тип или сообщение об отсутствии аннотации.
+     */
     public void runTask2() {
         System.out.println("\n─── ЗАДАНИЕ 2: @Default ───\n");
         Default annotation = DefaultDemo.class.getAnnotation(Default.class);
@@ -214,10 +276,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Управляет тем, включать ли класс/поле в строковое представление.
+ */
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ToString {
+    /**
+     * @return режим включения: YES — добавить, NO — пропустить
+     */
     Mode value() default Mode.YES;
+
     enum Mode { YES, NO }
 }
 ```
@@ -229,25 +298,46 @@ package entities;
 
 import annotations.ToString;
 
+/**
+ * Пример выбора полей для строкового представления при помощи аннотации @ToString.
+ */
 @ToString
 public class ToStringDemo {
 
+    /**
+     * Это поле включается в строку, т.к. явно отмечено @ToString(YES).
+     */
     @ToString
     private String title = "Included";
 
+    /**
+     * Это поле исключается из строки, т.к. отмечено @ToString(NO).
+     */
     @ToString(ToString.Mode.NO)
     private String secret = "Hidden";
 
+    /**
+     * Поле без аннотации: по умолчанию режим YES, поэтому будет выведено.
+     */
     private int number = 42;
 
+    /**
+     * @return значение title для возможных проверок
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @return скрытое значение secret (не попадает в строку buildString)
+     */
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * @return числовое значение number
+     */
     public int getNumber() {
         return number;
     }
@@ -266,8 +356,14 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Сервис строит строковое представление объекта по правилам аннотации @ToString.
+ */
 public class Task3Service {
 
+    /**
+     * Создает демо-объект и выводит строку, в которой нет полей с @ToString(NO).
+     */
     public void runTask3() {
         System.out.println("\n─── ЗАДАНИЕ 3: @ToString ───\n");
         ToStringDemo demo = new ToStringDemo();
@@ -276,6 +372,12 @@ public class Task3Service {
         System.out.println(representation);
     }
 
+    /**
+     * Если класс помечен @ToString, собирает его поля (кроме Mode.NO) в строку вида Class{a=1, b=2}.
+     *
+     * @param obj объект для преобразования
+     * @return строка со включенными полями или стандартный toString(), если аннотации нет
+     */
     public String buildString(Object obj) {
         if (obj == null) {
             return "null";
@@ -291,10 +393,10 @@ public class Task3Service {
             ToString fieldAnno = field.getAnnotation(ToString.class);
             ToString.Mode mode = fieldAnno != null ? fieldAnno.value() : ToString.Mode.YES;
             if (mode == ToString.Mode.NO) {
-                continue;
+                continue; // пропускаем поля, помеченные NO
             }
             try {
-                field.setAccessible(true);
+                field.setAccessible(true); // читаем даже приватные поля ради демонстрации
                 included.put(field.getName(), field.get(obj));
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException("Не удалось прочитать поле " + field.getName(), e);
@@ -343,11 +445,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Указывает набор валидаторов для класса или другой аннотации.
+ */
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Validate {
+    /**
+     * @return массив типов-валидаторов, которые должны применяться
+     */
     Class<?>[] value();
 }
+
 ```
 
 **ValidateDemo.java**
@@ -357,8 +466,14 @@ package entities;
 
 import annotations.Validate;
 
+/**
+ * Класс-маркер для демонстрации аннотации @Validate: хранит список валидаторов.
+ */
 @Validate({String.class, Integer.class})
 public class ValidateDemo {
+    /**
+     * Тело класса пустое — важна только аннотация на типе.
+     */
 }
 ```
 
@@ -370,8 +485,14 @@ package services;
 import annotations.Validate;
 import entities.ValidateDemo;
 
+/**
+ * Сервис читает аннотацию @Validate и выводит список указанных классов-валидаторов.
+ */
 public class Task4Service {
 
+    /**
+     * Получает аннотацию с класса ValidateDemo и печатает каждый тип из массива value().
+     */
     public void runTask4() {
         System.out.println("\n─── ЗАДАНИЕ 4: @Validate ───\n");
         Validate annotation = ValidateDemo.class.getAnnotation(Validate.class);
@@ -414,10 +535,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Хранит пару значений: строку и число, закрепленных за классом.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Two {
+    /**
+     * @return строковое свойство first
+     */
     String first();
+    /**
+     * @return числовое свойство second
+     */
     int second();
 }
 ```
@@ -429,8 +559,14 @@ package entities;
 
 import annotations.Two;
 
+/**
+ * Класс-хранилище значений для аннотации @Two: строка и число.
+ */
 @Two(first = "sample", second = 7)
 public class TwoDemo {
+    /**
+     * Содержит только аннотацию, данные читаются через reflection.
+     */
 }
 ```
 
@@ -442,8 +578,14 @@ package services;
 import annotations.Two;
 import entities.TwoDemo;
 
+/**
+ * Сервис считывает значения аннотации @Two с класса и выводит их в консоль.
+ */
 public class Task5Service {
 
+    /**
+     * Получает @Two у TwoDemo и печатает свойства first и second либо сообщает об отсутствии аннотации.
+     */
     public void runTask5() {
         System.out.println("\n─── ЗАДАНИЕ 5: @Two ───\n");
         Two annotation = TwoDemo.class.getAnnotation(Two.class);
@@ -486,9 +628,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Объявляет список кешируемых областей для класса.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cache {
+    /**
+     * @return массив имен кешей; по умолчанию пуст
+     */
     String[] value() default {};
 }
 ```
@@ -500,8 +648,14 @@ package entities;
 
 import annotations.Cache;
 
+/**
+ * Маркерный класс для демонстрации @Cache: задает кешируемые области.
+ */
 @Cache({"users", "orders", "products"})
 public class CacheDemo {
+    /**
+     * Логики нет — важна только аннотация на типе.
+     */
 }
 ```
 
@@ -515,8 +669,14 @@ import entities.CacheDemo;
 
 import java.util.Arrays;
 
+/**
+ * Сервис выводит список кешируемых областей из аннотации @Cache на классе.
+ */
 public class Task6Service {
 
+    /**
+     * Ищет @Cache на CacheDemo и выводит массив областей либо сообщает, что список пуст/аннотации нет.
+     */
     public void runTask6() {
         System.out.println("\n─── ЗАДАНИЕ 6: @Cache ───\n");
         Cache annotation = CacheDemo.class.getAnnotation(Cache.class);
@@ -565,6 +725,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * JUnit тест, проверяющий обработку аннотации @Invoke.
+ */
 public class InvokeTest {
 
     private InvokeDemo demo;
@@ -609,6 +772,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * JUnit тест проверяющий обработку некорректных значений аннотации @Two.
+ */
 public class TwoAnnotationTest {
 
     @Two(first = "", second = -1)
