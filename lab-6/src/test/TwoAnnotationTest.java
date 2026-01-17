@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * JUnit тест проверяющий обработку некорректных значений аннотации @Two.
+ */
 public class TwoAnnotationTest {
 
     @Two(first = "", second = -1)

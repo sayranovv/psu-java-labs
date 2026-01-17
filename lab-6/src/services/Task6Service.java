@@ -5,8 +5,14 @@ import entities.CacheDemo;
 
 import java.util.Arrays;
 
+/**
+ * Сервис выводит список кешируемых областей из аннотации @Cache на классе.
+ */
 public class Task6Service {
 
+    /**
+     * Ищет @Cache на CacheDemo и выводит массив областей либо сообщает, что список пуст/аннотации нет.
+     */
     public void runTask6() {
         System.out.println("\n─── ЗАДАНИЕ 6: @Cache ───\n");
         Cache annotation = CacheDemo.class.getAnnotation(Cache.class);

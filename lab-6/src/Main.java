@@ -2,7 +2,11 @@ import services.*;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * Точка входа: запускает консольное меню и маршрутизирует выполнение задач.
+     */
     public static void main(String[] args) {
+        // создаем сканер для чтения ввода пользователя
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -32,24 +36,34 @@ public class Main {
                     runTask(new Task6Service(), "Задание 6: @Cache");
                     break;
                 case "0":
-                    running = false;
+                    running = false; // завершаем цикл и программу
                     System.out.println("\nПрограмма завершена.");
                     break;
                 default:
                     System.out.println("\nНеверный выбор, повторите ввод.\n");
             }
         }
-        scanner.close();
+        scanner.close(); // освобождаем ресурс сканера
     }
 
+    /**
+     * Выводит приветственный баннер для пользователя.
+     */
     private static void printWelcome() {
         System.out.println();
-        System.out.println("ЛАБОРАТОРНАЯ №6: АННОТАЦИИ И ТЕСТЫ");
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║  ЛАБОРАТОРНАЯ №6: АННОТАЦИИ И ТЕСТЫ  ║");
+        System.out.println("╚══════════════════════════════════════╝");
         System.out.println();
     }
 
+    /**
+     * Показывает список доступных заданий и запрос на ввод.
+     */
     private static void printMenu() {
-        System.out.println("           МЕНЮ               ");
+        System.out.println("╔════════════════════════════╗");
+        System.out.println("║          МЕНЮ              ║");
+        System.out.println("╚════════════════════════════╝");
         System.out.println("  1 - Задание 1: @Invoke");
         System.out.println("  2 - Задание 2: @Default");
         System.out.println("  3 - Задание 3: @ToString");
@@ -60,8 +74,15 @@ public class Main {
         System.out.print("Ваш выбор: ");
     }
 
+    /**
+     * Выполняет выбранный сервис с обработкой ошибок и паузой на возврат в меню.
+     *
+     * @param service  экземпляр сервиса задачи
+     * @param taskName человекочитаемое имя задачи для сообщений об ошибках
+     */
     private static void runTask(Object service, String taskName) {
         try {
+            // проверяем тип сервиса и вызываем нужный метод
             if (service instanceof Task1Service) {
                 ((Task1Service) service).runTask1();
             } else if (service instanceof Task2Service) {
@@ -76,8 +97,10 @@ public class Main {
                 ((Task6Service) service).runTask6();
             }
 
-            System.out.println("  Нажмите ENTER для возврата в меню  ");
-            new Scanner(System.in).nextLine();
+            System.out.println("\n╔══════════════════════════════════════╗");
+            System.out.println("║   Нажмите ENTER для возврата в меню  ║");
+            System.out.println("╚══════════════════════════════════════╝\n");
+            new Scanner(System.in).nextLine(); // пауза, чтобы пользователь увидел вывод
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении " + taskName + ": " + e.getMessage());
             e.printStackTrace();

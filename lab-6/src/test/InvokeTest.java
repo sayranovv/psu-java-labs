@@ -10,6 +10,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * JUnit тест, проверяющий обработку аннотации @Invoke.
+ */
 public class InvokeTest {
 
     private InvokeDemo demo;
